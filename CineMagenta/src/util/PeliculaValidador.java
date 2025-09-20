@@ -6,11 +6,6 @@ package util;
 
 import model.Pelicula;
 
-/**
- *
- * @author mvarg
- */
-
 public class PeliculaValidador {
 
     public static void validar(Pelicula p) throws IllegalArgumentException {
@@ -23,7 +18,7 @@ public class PeliculaValidador {
         if (p.getDirector() == null || p.getDirector().trim().isEmpty()) {
             throw new IllegalArgumentException("El director no puede estar vacío.");
         }
-        if (p.getAnio() < 1900 || p.getAnio() > 2100) {
+        if (p.getAnno() < 1900 || p.getAnno() > 2100) {
             throw new IllegalArgumentException("El año debe estar entre 1900 y 2100.");
         }
         if (p.getDuracion() <= 0) {

@@ -1,7 +1,12 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package view;
 
 import model.Pelicula;
-import util.PeliculaValidator;
+import util.PeliculaValidador;
+import dao.PeliculaDAO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,11 +52,10 @@ public class FormularioAgregar extends JFrame {
         add(btnGuardar);
         add(btnLimpiar);
 
-        // Acción guardar
         btnGuardar.addActionListener((ActionEvent e) -> {
             try {
                 Pelicula p = new Pelicula(
-                    0, // El id se asignará automáticamente en la BD
+                    0, // El ID se autogenera
                     txtTitulo.getText(),
                     txtDirector.getText(),
                     Integer.parseInt(txtAnio.getText()),
@@ -59,15 +63,24 @@ public class FormularioAgregar extends JFrame {
                     comboGenero.getSelectedItem().toString()
                 );
 
-                PeliculaValidator.validar(p);
+                PeliculaValidador.validar(p);
 
-                // Aquí iría la lógica para insertar en la BD (DAO)
-                JOptionPane.showMessageDialog(this, "Película registrada correctamente.");
+                PeliculaDAO dao = new PeliculaDAO();
+                boolean exito = dao.insertar(p);
+
+                if (exito) {
+                    JOptionPane.showMessageDialog(this, "Película registrada correctamente.");
+                    btnLimpiar.doClick(); // Limpia los campos después de guardar
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo registrar la película.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Año y duración deben ser números válidos.", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error inesperado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
