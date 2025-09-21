@@ -8,13 +8,31 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * Ventana principal del sistema CineMagenta.
+ * Presenta una barra de herramientas con opciones para gestionar la cartelera de películas,
+ * incluyendo agregar, modificar, eliminar, listar y buscar.
+ * 
+ * <p>Esta clase extiende {@link JFrame} y sirve como punto de entrada visual para el usuario.</p>
+ * 
+ * <p>Actualmente, el botón "Agregar" abre el formulario {@link FormularioAgregar}.
+ * Los demás botones están disponibles para futuras extensiones.</p>
+ * 
+ * @author Miguel
+ */
 public class MainFrame extends JFrame {
 
+    /**
+     * Constructor que inicializa la interfaz principal del sistema.
+     * Configura la ventana, la barra de herramientas y las acciones de los botones.
+     */
     public MainFrame() {
         setTitle("Cine Magenta - Cartelera");
-        setSize(800, 600);
+        setSize(1280, 720);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new BorderLayout()); // Asegura distribución por regiones
+
 
         // Barra de herramientas
         JToolBar toolBar = new JToolBar();
@@ -24,6 +42,14 @@ public class MainFrame extends JFrame {
         JButton btnListar = new JButton("Listar");
         JButton btnBuscar = new JButton("Buscar");
 
+        // Estilo de botones
+        Font botonFont = new Font("SansSerif", Font.BOLD, 20);
+        btnAgregar.setFont(botonFont);
+        btnModificar.setFont(botonFont);
+        btnEliminar.setFont(botonFont);
+        btnListar.setFont(botonFont);
+        btnBuscar.setFont(botonFont);
+
         toolBar.add(btnAgregar);
         toolBar.add(btnModificar);
         toolBar.add(btnEliminar);
@@ -31,14 +57,33 @@ public class MainFrame extends JFrame {
         toolBar.add(btnBuscar);
 
         add(toolBar, BorderLayout.NORTH);
-
-        // Acciones (puedes conectar con formularios específicos)
+        add(crearBanner(), BorderLayout.CENTER);
+        
+        /**
+         * Acción del botón "Agregar".
+         * Abre el formulario {@link FormularioAgregar} para registrar una nueva película.
+         */
         btnAgregar.addActionListener((ActionEvent e) -> {
             new FormularioAgregar().setVisible(true);
         });
 
-        // Otros botones pueden abrir sus respectivos formularios
+        //TODO: En futuras versiones otros botones tendrán sus respectivas acciones
 
         setVisible(true);
+    }
+
+    /**
+     * Crea un JLabel con el banner cargado desde recursos.
+     * Escala la imagen para ajustarse al ancho de la ventana.
+     *
+     * @return JLabel con el banner visual
+     */
+    private JLabel crearBanner() {
+        ImageIcon rawIcon = new ImageIcon(getClass().getResource("/resources/banner.png"));
+        Image img = rawIcon.getImage().getScaledInstance(800, 200, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(img);
+        JLabel etiqueta = new JLabel(scaledIcon);
+        etiqueta.setHorizontalAlignment(JLabel.CENTER);
+        return etiqueta;
     }
 }

@@ -18,20 +18,21 @@ Proyecto cineMagenta/
 │   │   ├── dao/                          # PeliculaDAO 
 │   │   │   └── PeliculaDAO.java
 │   │   ├── model/                        # Clase Pelicula 
-│   │   │   └── Pelicula.java 
-│   │   ├── util/                         # ConexionDB y PeliculaValidator 
+│   │   │   └── Pelicula.java  
+│   │   ├── util/                         # ConexionDB y PeliculaValidador 
 │   │   │   ├── ConexionDB.java 
 │   │   │   └── PeliculaValidador.java 
-│   │   └── view/                         # MainFrame y FormularioAgregar
-│   │       ├── FormularioAgregar.java 
-│   │       └── MainFrame.java 
+│   │   ├── view/                         # MainFrame y FormularioAgregar
+│   │   │   ├── FormularioAgregar.java 
+│   │   │   └── MainFrame.java
+│   │   └── view/                         # Recursos gráficos para la interfaz
 │   ├── nbproject/                       
 │   ├── build.xml                        
 │   └── manifest.mf                        
 ├── docs/                                 # Documentación técnica 
 │   ├── Cine_DB.sql        
 │   ├── UML_CineMagenta    
-│   └── javadoc/ (pendiente)           
+│   └── javadoc/          
 └── README.md          
 ```
 ---
@@ -66,6 +67,7 @@ El script de creación se encuentra en [`docs/Cine_DB.sql`](docs/Cine_DB.sql).
 ## 📐 Diagrama UML
 
 El diagrama UML del sistema se encuentra en la carpeta [`docs/UML_CineMagenta.png`](docs/UML_CineMagenta.png). Este representa las clases principales del modelo, DAO, y flujo de interacción entre la interfaz gráfica y la base de datos.
+![Diagrama UML](docs/UML_CineMagenta.png)
 
 ---
 

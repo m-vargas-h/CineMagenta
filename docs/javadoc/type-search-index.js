@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"<Unnamed>","l":"CineMagenta"},{"p":"util","l":"ConexionDB"},{"p":"view","l":"FormularioAgregar"},{"p":"view","l":"MainFrame"},{"p":"model","l":"Pelicula"},{"p":"dao","l":"PeliculaDAO"},{"p":"util","l":"PeliculaValidador"}];updateSearchResults();

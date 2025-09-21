@@ -12,46 +12,78 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * Ventana de formulario para agregar una nueva película al sistema CineMagenta.
+ * Permite ingresar los datos básicos de una película, validarlos y almacenarlos en la base de datos.
+ * 
+ * <p>Incluye campos para título, director, año, duración y género, además de botones para guardar y limpiar.</p>
+ * 
+ * <p>Utiliza {@link PeliculaValidador} para validar los datos ingresados y {@link PeliculaDAO} para persistencia.</p>
+ * 
+ * @author Miguel
+ */
 public class FormularioAgregar extends JFrame {
+
     private JTextField txtTitulo, txtDirector, txtAnio, txtDuracion;
     private JComboBox<String> comboGenero;
     private JButton btnGuardar, btnLimpiar;
 
+    /**
+     * Constructor que inicializa y configura la interfaz del formulario.
+     * Define los campos de entrada, botones de acción y sus respectivos listeners.
+     */
     public FormularioAgregar() {
+
         setTitle("Agregar Película");
-        setSize(400, 350);
+        setSize(600, 500);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(7, 2, 10, 10));
+        setLayout(new BorderLayout());
+
+        // Panel superior con el logo centrado
+        JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelLogo.add(crearLogo());
+        add(panelLogo, BorderLayout.NORTH);
+
+        // Panel central con los campos y botones
+        JPanel panelFormulario = new JPanel(new GridLayout(7, 2, 10, 10));
+        panelFormulario.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Campos
-        add(new JLabel("Título:"));
+        panelFormulario.add(new JLabel("Título:"));
         txtTitulo = new JTextField();
-        add(txtTitulo);
+        panelFormulario.add(txtTitulo);
 
-        add(new JLabel("Director:"));
+        panelFormulario.add(new JLabel("Director:"));
         txtDirector = new JTextField();
-        add(txtDirector);
+        panelFormulario.add(txtDirector);
 
-        add(new JLabel("Año:"));
+        panelFormulario.add(new JLabel("Año:"));
         txtAnio = new JTextField();
-        add(txtAnio);
+        panelFormulario.add(txtAnio);
 
-        add(new JLabel("Duración (min):"));
+        panelFormulario.add(new JLabel("Duración (min):"));
         txtDuracion = new JTextField();
-        add(txtDuracion);
+        panelFormulario.add(txtDuracion);
 
-        add(new JLabel("Género:"));
+        panelFormulario.add(new JLabel("Género:"));
         comboGenero = new JComboBox<>(new String[] {
             "Acción", "Comedia", "Drama", "Suspenso", "Terror", "Animación"
         });
-        add(comboGenero);
+        panelFormulario.add(comboGenero);
 
         // Botones
         btnGuardar = new JButton("Guardar");
         btnLimpiar = new JButton("Limpiar");
-        add(btnGuardar);
-        add(btnLimpiar);
+        panelFormulario.add(btnGuardar);
+        panelFormulario.add(btnLimpiar);
 
+        add(panelFormulario, BorderLayout.CENTER);
+
+        /**
+         * Acción del botón Guardar.
+         * Crea una instancia de {@link Pelicula}, la valida y la inserta en la base de datos.
+         * Muestra mensajes de éxito o error según el resultado.
+         */
         btnGuardar.addActionListener((ActionEvent e) -> {
             try {
                 Pelicula p = new Pelicula(
@@ -84,7 +116,10 @@ public class FormularioAgregar extends JFrame {
             }
         });
 
-        // Acción limpiar
+        /**
+         * Acción del botón Limpiar.
+         * Restablece todos los campos del formulario a sus valores por defecto.
+         */
         btnLimpiar.addActionListener((ActionEvent e) -> {
             txtTitulo.setText("");
             txtDirector.setText("");
@@ -94,5 +129,26 @@ public class FormularioAgregar extends JFrame {
         });
 
         setVisible(true);
+    }
+
+    /**
+     * Crea un JLabel con el logo cargado desde recursos.
+     * Escala la imagen para ajustarse al ancho del formulario.
+     *
+     * @return JLabel con el logo visual
+     */
+    private JLabel crearLogo() {
+        ImageIcon rawIcon = new ImageIcon(getClass().getResource("/resources/logo.png"));
+        
+        if (rawIcon.getIconWidth() == -1) {
+            System.err.println("No se pudo cargar el logo. Verifica la ruta y el archivo.");
+            return new JLabel("Logo no disponible");
+        }
+
+        Image img = rawIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(img);
+        JLabel etiqueta = new JLabel(scaledIcon);
+        etiqueta.setHorizontalAlignment(JLabel.CENTER);
+        return etiqueta;
     }
 }

@@ -5,10 +5,25 @@
 
 import view.MainFrame;
 
+/**
+ * Clase principal del sistema CineMagenta.
+ * Inicia la aplicación gráfica cargando la ventana principal {@link MainFrame}.
+ * 
+ * <p>Utiliza {@link javax.swing.SwingUtilities#invokeLater(Runnable)} para garantizar
+ * que la interfaz se construya en el hilo de eventos de Swing, asegurando compatibilidad
+ * con el look and feel nativo del sistema operativo.</p>
+ * 
+ * @author Miguel
+ */
 public class CineMagenta {
 
+    /**
+     * Método principal que lanza la aplicación.
+     * Crea y muestra la ventana principal del sistema.
+     *
+     * @param args argumentos de línea de comandos (no utilizados)
+     */
     public static void main(String[] args) {
-        // Recomendado para asegurar apariencia nativa
         javax.swing.SwingUtilities.invokeLater(() -> {
             new MainFrame();
         });
