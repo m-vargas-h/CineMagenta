@@ -25,14 +25,15 @@ Proyecto cineMagenta/
 │   │   ├── view/                         # MainFrame y FormularioAgregar
 │   │   │   ├── FormularioAgregar.java 
 │   │   │   └── MainFrame.java
-│   │   └── view/                         # Recursos gráficos para la interfaz
+│   │   └── resources/                    # Recursos gráficos para la interfaz
 │   ├── nbproject/                       
 │   ├── build.xml                        
 │   └── manifest.mf                        
 ├── docs/                                 # Documentación técnica 
 │   ├── Cine_DB.sql        
 │   ├── UML_CineMagenta    
-│   └── javadoc/          
+│   └── javadoc/ 
+├── lib/                                  # Contiene archivos .jar necesarios para el proyecto
 └── README.md          
 ```
 ---
@@ -73,9 +74,7 @@ El diagrama UML del sistema se encuentra en la carpeta [`docs/UML_CineMagenta.pn
 
 ## 📚 Documentación Javadoc
 
-La documentación técnica generada con Javadoc estará disponible en la carpeta [`docs/javadoc/`](docs/javadoc/). Esta incluirá descripciones de clases, métodos y estructuras utilizadas en el proyecto.
-
-> ⚠️ *La documentación Javadoc está en desarrollo y será completada en la siguiente fase.*
+La documentación técnica generada con Javadoc esta disponible en la carpeta [`docs/javadoc/`](docs/javadoc/). 
 
 ---
 
@@ -101,7 +100,6 @@ La documentación técnica generada con Javadoc estará disponible en la carpeta
 ## 🧭 Próximos pasos
 
 - Implementar formularios para modificar, eliminar, listar y buscar películas.
-- Completar la documentación Javadoc.
 - Mejorar la experiencia visual y navegación de la interfaz.
 - Validar duplicación de `id` si se permite ingreso manual.
 
