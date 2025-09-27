@@ -65,4 +65,81 @@ public class PeliculaDAO {
             return rs.next();
         }
     }
+    /**
+     * Busca una película por su título en la tabla PELICULA.
+     *
+     * @param titulo Título de la película a buscar
+     * @return Objeto {@link Pelicula} si se encuentra; {@code null} si no existe
+     */
+    public Pelicula buscarPorTitulo(String titulo) {
+        Pelicula resultado = null;
+        String sql = "SELECT * FROM CARTELERA WHERE TITULO = ?";
+
+        try (Connection conn = ConexionDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, titulo);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                resultado = new Pelicula(
+                    rs.getInt("ID"),
+                    rs.getString("TITULO"),
+                    rs.getString("DIRECTOR"),
+                    rs.getInt("ANNO"),
+                    rs.getInt("DURACION"),
+                    rs.getString("GENERO")
+                );
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error al buscar película: " + e.getMessage());
+        }
+
+        return resultado;
+    }
+
+    /**
+     * Elimina una película por su título en la tabla PELICULA.
+     *
+     * @param titulo Título de la película a eliminar
+     * @return {@code true} si la eliminación fue exitosa; {@code false} si no se encontró o no se pudo eliminar
+     */
+    public boolean eliminarPorTitulo(String titulo) {
+        String sql = "DELETE FROM CARTELERA WHERE TITULO = ?";
+
+        try (Connection conn = ConexionDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, titulo);
+            int filasAfectadas = stmt.executeUpdate();
+
+            return filasAfectadas > 0;
+
+        } catch (Exception e) {
+            System.err.println("Error al eliminar película: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean actualizarPelicula(Pelicula p) {
+        String sql = "UPDATE CARTELERA SET TITULO = ?, DIRECTOR = ?, ANNO = ?, DURACION = ?, GENERO = ? WHERE ID = ?";
+
+        try (Connection conn = ConexionDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, p.getTitulo());
+            stmt.setString(2, p.getDirector());
+            stmt.setInt(3, p.getAnno());
+            stmt.setInt(4, p.getDuracion());
+            stmt.setString(5, p.getGenero());
+            stmt.setInt(6, p.getId());
+
+            return stmt.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            System.err.println("Error al actualizar película: " + e.getMessage());
+            return false;
+        }
+    }
 }

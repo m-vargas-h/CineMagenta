@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
  */
 public class FormularioAgregar extends JFrame {
 
-    private JTextField txtTitulo, txtDirector, txtAnio, txtDuracion;
+    private JTextField txtTitulo, txtDirector, txtAnno, txtDuracion;
     private JComboBox<String> comboGenero;
     private JButton btnGuardar, btnLimpiar;
 
@@ -38,6 +38,7 @@ public class FormularioAgregar extends JFrame {
         setSize(600, 500);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Panel superior con el logo centrado
         JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -58,8 +59,8 @@ public class FormularioAgregar extends JFrame {
         panelFormulario.add(txtDirector);
 
         panelFormulario.add(new JLabel("Año:"));
-        txtAnio = new JTextField();
-        panelFormulario.add(txtAnio);
+        txtAnno = new JTextField();
+        panelFormulario.add(txtAnno);
 
         panelFormulario.add(new JLabel("Duración (min):"));
         txtDuracion = new JTextField();
@@ -90,7 +91,7 @@ public class FormularioAgregar extends JFrame {
                     0, // El ID se autogenera
                     txtTitulo.getText(),
                     txtDirector.getText(),
-                    Integer.parseInt(txtAnio.getText()),
+                    Integer.parseInt(txtAnno.getText()),
                     Integer.parseInt(txtDuracion.getText()),
                     comboGenero.getSelectedItem().toString()
                 );
@@ -123,7 +124,7 @@ public class FormularioAgregar extends JFrame {
         btnLimpiar.addActionListener((ActionEvent e) -> {
             txtTitulo.setText("");
             txtDirector.setText("");
-            txtAnio.setText("");
+            txtAnno.setText("");
             txtDuracion.setText("");
             comboGenero.setSelectedIndex(0);
         });

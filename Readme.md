@@ -20,10 +20,13 @@ Proyecto cineMagenta/
 │   │   ├── model/                        # Clase Pelicula 
 │   │   │   └── Pelicula.java  
 │   │   ├── util/                         # ConexionDB y PeliculaValidador 
-│   │   │   ├── ConexionDB.java 
-│   │   │   └── PeliculaValidador.java 
-│   │   ├── view/                         # MainFrame y FormularioAgregar
+│   │   │   ├── ConexionDB.java
+│   │   │   ├── PeliculaValidador.java 
+│   │   │   └── VentanaManager
+│   │   ├── view/                         # MainFrame y Formularios
 │   │   │   ├── FormularioAgregar.java 
+│   │   │   ├── FormularioEliminar.java 
+│   │   │   ├── FormularioModificar.java 
 │   │   │   └── MainFrame.java
 │   │   └── resources/                    # Recursos gráficos para la interfaz
 │   ├── nbproject/                       
@@ -57,11 +60,20 @@ El script de creación se encuentra en [`docs/Cine_DB.sql`](docs/Cine_DB.sql).
 ## 🖥️ Funcionalidades implementadas
 
 - **Interfaz principal (`MainFrame`)** con barra de herramientas
+
 - **Formulario “Agregar película”** con:
   - Validación de campos vacíos
   - Botón “Limpiar”
   - Inserción real en MySQL usando `PeliculaDAO`
   - Cuadros de diálogo para retroalimentación
+- **Formulario “Modificar película”** con:
+  - Búsqueda por título con carga automática de campos
+  - Campos editables: título, director, año, duración, género
+  - Género disponible como lista desplegable
+- **Formulario “Eliminar película”** con:
+  - Búsqueda por título con confirmación previa
+  - Validación de existencia antes de eliminar
+  - Mensajes de éxito o error según el resultado
 
 ---
 
@@ -99,7 +111,7 @@ La documentación técnica generada con Javadoc esta disponible en la carpeta [`
 
 ## 🧭 Próximos pasos
 
-- Implementar formularios para modificar, eliminar, listar y buscar películas.
+- Implementar formularios para listar y buscar películas.
 - Mejorar la experiencia visual y navegación de la interfaz.
 - Validar duplicación de `id` si se permite ingreso manual.
 

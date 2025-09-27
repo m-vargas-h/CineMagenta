@@ -6,7 +6,8 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+//import java.awt.event.ActionEvent;
+import util.VentanaManager;
 
 /**
  * Ventana principal del sistema CineMagenta.
@@ -63,8 +64,24 @@ public class MainFrame extends JFrame {
          * Acción del botón "Agregar".
          * Abre el formulario {@link FormularioAgregar} para registrar una nueva película.
          */
-        btnAgregar.addActionListener((ActionEvent e) -> {
-            new FormularioAgregar().setVisible(true);
+        btnAgregar.addActionListener(e -> {
+            VentanaManager.abrirVentana(FormularioAgregar.class, FormularioAgregar::new);
+        });
+
+        /**
+         * Acción del botón "Eliminar".
+         * Abre el formulario {@link FormularioEliminar} para eliminar una película existente.
+         */
+        btnEliminar.addActionListener(e -> {
+            VentanaManager.abrirVentana(FormularioEliminar.class, FormularioEliminar::new);
+        });
+
+        /**
+         * Acción del botón "Modificar".
+         * Abre el formulario {@link FormularioModificar} para editar los datos de una película.
+         */
+        btnModificar.addActionListener(e -> {
+            VentanaManager.abrirVentana(FormularioModificar.class, FormularioModificar::new);
         });
 
         //TODO: En futuras versiones otros botones tendrán sus respectivas acciones
