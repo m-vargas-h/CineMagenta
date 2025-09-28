@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase encargada de gestionar operaciones de persistencia relacionadas con la entidad {@link Pelicula}.
@@ -142,4 +144,24 @@ public class PeliculaDAO {
             return false;
         }
     }
+
+    public List<String> obtenerTodosLosTitulos() {
+        List<String> titulos = new ArrayList<>();
+        String sql = "SELECT TITULO FROM CARTELERA ORDER BY TITULO ASC";
+
+        try (Connection conn = ConexionDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                titulos.add(rs.getString("TITULO"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al obtener los títulos: " + e.getMessage());
+        }
+
+        return titulos;
+    }
+
 }

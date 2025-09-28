@@ -1,28 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package view;
 
 import model.Pelicula;
 import util.PeliculaValidador;
 import dao.PeliculaDAO;
+import view.FormularioBase;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
  * Ventana de formulario para agregar una nueva película al sistema CineMagenta.
  * Permite ingresar los datos básicos de una película, validarlos y almacenarlos en la base de datos.
- * 
+ *
  * <p>Incluye campos para título, director, año, duración y género, además de botones para guardar y limpiar.</p>
- * 
+ *
  * <p>Utiliza {@link PeliculaValidador} para validar los datos ingresados y {@link PeliculaDAO} para persistencia.</p>
- * 
+ *
  * @author Miguel
  */
-public class FormularioAgregar extends JFrame {
+public class FormularioAgregar extends FormularioBase {
 
     private JTextField txtTitulo, txtDirector, txtAnno, txtDuracion;
     private JComboBox<String> comboGenero;
@@ -33,62 +29,33 @@ public class FormularioAgregar extends JFrame {
      * Define los campos de entrada, botones de acción y sus respectivos listeners.
      */
     public FormularioAgregar() {
+        super("Agregar Película");
 
-        setTitle("Agregar Película");
-        setSize(600, 500);
-        setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        // Panel superior con el logo centrado
-        JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        panelLogo.add(crearLogo());
-        add(panelLogo, BorderLayout.NORTH);
-
-        // Panel central con los campos y botones
-        JPanel panelFormulario = new JPanel(new GridLayout(7, 2, 10, 10));
-        panelFormulario.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        // Campos
-        panelFormulario.add(new JLabel("Título:"));
+        // Inicialización de campos
         txtTitulo = new JTextField();
-        panelFormulario.add(txtTitulo);
-
-        panelFormulario.add(new JLabel("Director:"));
         txtDirector = new JTextField();
-        panelFormulario.add(txtDirector);
-
-        panelFormulario.add(new JLabel("Año:"));
         txtAnno = new JTextField();
-        panelFormulario.add(txtAnno);
-
-        panelFormulario.add(new JLabel("Duración (min):"));
         txtDuracion = new JTextField();
-        panelFormulario.add(txtDuracion);
-
-        panelFormulario.add(new JLabel("Género:"));
         comboGenero = new JComboBox<>(new String[] {
             "Acción", "Comedia", "Drama", "Suspenso", "Terror", "Animación"
         });
-        panelFormulario.add(comboGenero);
 
-        // Botones
         btnGuardar = new JButton("Guardar");
         btnLimpiar = new JButton("Limpiar");
-        panelFormulario.add(btnGuardar);
-        panelFormulario.add(btnLimpiar);
 
-        add(panelFormulario, BorderLayout.CENTER);
+        // Agregar campos al panel con estilo original
+        agregarCampo("Título:", txtTitulo);
+        agregarCampo("Director:", txtDirector);
+        agregarCampo("Año:", txtAnno);
+        agregarCampo("Duración (min):", txtDuracion);
+        agregarCampo("Género:", comboGenero);
+        agregarBotones(btnGuardar, btnLimpiar);
 
-        /**
-         * Acción del botón Guardar.
-         * Crea una instancia de {@link Pelicula}, la valida y la inserta en la base de datos.
-         * Muestra mensajes de éxito o error según el resultado.
-         */
+        // Acción del botón Guardar
         btnGuardar.addActionListener((ActionEvent e) -> {
             try {
                 Pelicula p = new Pelicula(
-                    0, // El ID se autogenera
+                    0,
                     txtTitulo.getText(),
                     txtDirector.getText(),
                     Integer.parseInt(txtAnno.getText()),
@@ -103,7 +70,7 @@ public class FormularioAgregar extends JFrame {
 
                 if (exito) {
                     JOptionPane.showMessageDialog(this, "Película registrada correctamente.");
-                    btnLimpiar.doClick(); // Limpia los campos después de guardar
+                    btnLimpiar.doClick();
                 } else {
                     JOptionPane.showMessageDialog(this, "No se pudo registrar la película.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -117,10 +84,7 @@ public class FormularioAgregar extends JFrame {
             }
         });
 
-        /**
-         * Acción del botón Limpiar.
-         * Restablece todos los campos del formulario a sus valores por defecto.
-         */
+        // Acción del botón Limpiar
         btnLimpiar.addActionListener((ActionEvent e) -> {
             txtTitulo.setText("");
             txtDirector.setText("");
@@ -130,26 +94,5 @@ public class FormularioAgregar extends JFrame {
         });
 
         setVisible(true);
-    }
-
-    /**
-     * Crea un JLabel con el logo cargado desde recursos.
-     * Escala la imagen para ajustarse al ancho del formulario.
-     *
-     * @return JLabel con el logo visual
-     */
-    private JLabel crearLogo() {
-        ImageIcon rawIcon = new ImageIcon(getClass().getResource("/resources/logo.png"));
-        
-        if (rawIcon.getIconWidth() == -1) {
-            System.err.println("No se pudo cargar el logo. Verifica la ruta y el archivo.");
-            return new JLabel("Logo no disponible");
-        }
-
-        Image img = rawIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(img);
-        JLabel etiqueta = new JLabel(scaledIcon);
-        etiqueta.setHorizontalAlignment(JLabel.CENTER);
-        return etiqueta;
     }
 }
