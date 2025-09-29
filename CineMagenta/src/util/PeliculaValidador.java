@@ -41,7 +41,7 @@ public class PeliculaValidador {
         if (p.getDuracion() <= 0) {
             throw new IllegalArgumentException("La duración debe ser mayor a cero.");
         }
-        if (p.getGenero() == null || p.getGenero().trim().isEmpty()) {
+        if (p.getGenero() == null) {
             throw new IllegalArgumentException("El género no puede estar vacío.");
         }
     }

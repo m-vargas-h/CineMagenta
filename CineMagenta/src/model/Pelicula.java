@@ -6,8 +6,15 @@ package model;
 
 /**
  * Representa una película dentro del sistema CineMagenta.
- * Contiene información relevante como título, director, año de estreno, duración y género.
+ * Contiene información relevante como título, director, año de estreno, duración, género y ruta de portada.
+ * 
  * Esta clase forma parte del modelo de datos y se utiliza para mapear registros de la cartelera.
+ * Incluye constructores para películas nuevas y existentes, además de métodos de acceso.
+ * 
+ * Ejemplo de uso:
+ * <pre>
+ *     Pelicula p = new Pelicula("Matrix", "Wachowski", 1999, 136, Genero.ACCION, "matrix.jpg");
+ * </pre>
  * 
  * @author Miguel
  */
@@ -17,25 +24,28 @@ public class Pelicula {
     private String director;
     private int anno;
     private int duracion; // en minutos
-    private String genero;
+    private Genero genero;
+    private String rutaPortada;
 
     /**
-     * Constructor principal que inicializa todos los atributos de la película.
-     *
-     * @param id        Identificador único de la película
-     * @param titulo    Título de la película
-     * @param director  Nombre del director
-     * @param anno      Año de estreno
-     * @param duracion  Duración en minutos
-     * @param genero    Género principal de la película
+     * Constructor completo con ID, usado para registros existentes.
+     * 
+     * @param id Identificador único de la película
+     * @param titulo Título de la película
+     * @param director Nombre del director
+     * @param anno Año de estreno
+     * @param duracion Duración en minutos
+     * @param genero Género principal de la película
+     * @param rutaPortada Ruta del archivo de la portada
      */
-    public Pelicula(int id, String titulo, String director, int anno, int duracion, String genero) {
+    public Pelicula(int id, String titulo, String director, int anno, int duracion, Genero genero, String rutaPortada) {
         this.id = id;
         this.titulo = titulo;
         this.director = director;
         this.anno = anno;
         this.duracion = duracion;
         this.genero = genero;
+        this.rutaPortada = rutaPortada;
     }
 
     // Getters
@@ -84,8 +94,16 @@ public class Pelicula {
      * Obtiene el género principal de la película.
      * @return género
      */
-    public String getGenero() { 
+    public Genero getGenero() { 
         return genero; 
+    }
+
+    /**
+     * Obtiene la ruta del archivo de la portada de la película.
+     * @return ruta de la portada
+     */
+    public String getRutaPortada() {
+        return rutaPortada;
     }
 
     // Setters
@@ -134,8 +152,16 @@ public class Pelicula {
      * Establece el género principal de la película.
      * @param genero nuevo género
      */
-    public void setGenero(String genero) { 
-        this.genero = genero; 
+    public void setGenero(Genero genero) {
+        this.genero = genero;
+    }
+
+    /**
+     * Establece la ruta del archivo de la portada de la película.
+     * @param rutaPortada nueva ruta de la portada
+     */
+    public void setRutaPortada(String rutaPortada) {
+        this.rutaPortada = rutaPortada;
     }
 
     /**
@@ -144,7 +170,9 @@ public class Pelicula {
      */
     @Override
     public String toString() {
-        return String.format("Pelicula{id=%d, titulo='%s', director='%s', año=%d, duración=%d min, género='%s'}",
-                id, titulo, director, anno, duracion, genero);
+        return String.format(
+            "Pelicula{id=%d, titulo='%s', director='%s', año=%d, duración=%d min, género='%s', portada='%s'}",
+            id, titulo, director, anno, duracion, genero, rutaPortada
+        );
     }
 }

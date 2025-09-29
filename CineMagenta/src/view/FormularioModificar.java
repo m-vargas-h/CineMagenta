@@ -1,62 +1,67 @@
 package view;
 
-import dao.PeliculaDAO;
-import model.Pelicula;
+import model.*;
+import service.PeliculaService;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * Formulario gráfico para modificar los datos de una película existente en el sistema CineMagenta.
+ * Permite buscar una película por título, visualizar sus datos actuales, editarlos y guardar los cambios.
+ * 
+ * Esta clase extiende {@link FormularioBase} para reutilizar componentes visuales comunes
+ * y utiliza {@link PeliculaService} para validar y actualizar los datos en la base de datos.
+ * 
+ * @author Miguel
+ */
 public class FormularioModificar extends FormularioBase {
 
     private JComboBox<String> comboTituloBuscar;
     private JTextField txtTitulo, txtDirector, txtAnno, txtDuracion;
-    private JComboBox<String> comboGenero;
-    private JButton btnBuscar, btnGuardar, btnLimpiar;
-
+    private JComboBox<Genero> comboGenero;
+    private JButton btnBuscar, btnGuardar, btnLimpiar, btnSeleccionarPortada;
+    private String rutaPortadaSeleccionada;
     private Pelicula peliculaActual;
 
+    private final PeliculaService service = new PeliculaService();
+
+    /**
+     * Constructor que inicializa los componentes del formulario.
+     * Configura el combo de búsqueda, los campos editables, el combo de género y los botones de acción.
+     */
     public FormularioModificar() {
         super("Modificar Película");
 
-        comboTituloBuscar = new JComboBox<>(new PeliculaDAO().obtenerTodosLosTitulos().toArray(new String[0]));
-        comboTituloBuscar.setEditable(true);
+        comboTituloBuscar = crearComboBusquedaTitulos();
+        txtTitulo = crearCampoTexto("Título:");
+        txtDirector = crearCampoTexto("Director:");
+        txtAnno = crearCampoTexto("Año:");
+        txtDuracion = crearCampoTexto("Duración (min):");
+        comboGenero = new JComboBox<>(Genero.values());
 
-        txtTitulo = new JTextField();
-        txtDirector = new JTextField();
-        txtAnno = new JTextField();
-        txtDuracion = new JTextField();
-        comboGenero = new JComboBox<>(new String[] {
-            "Acción", "Comedia", "Drama", "Ciencia Ficción", "Terror", "Romance", "Musical", "Documental", "Animación"
-        });
-
-        btnBuscar = new JButton("Buscar");
-        btnGuardar = new JButton("Guardar Cambios");
-        btnLimpiar = new JButton("Limpiar");
+        btnBuscar = crearBoton("Buscar", this::buscarPelicula);
+        btnGuardar = crearBoton("Guardar Cambios", this::guardarCambios);
+        btnLimpiar = crearBoton("Limpiar", e -> limpiarCampos());
+        btnSeleccionarPortada = crearBoton("Cambiar portada", e -> seleccionarImagen());
 
         agregarCampo("Título a buscar:", comboTituloBuscar);
-        agregarCampo("Título:", txtTitulo);
-        agregarCampo("Director:", txtDirector);
-        agregarCampo("Año:", txtAnno);
-        agregarCampo("Duración (min):", txtDuracion);
         agregarCampo("Género:", comboGenero);
+        agregarCampo("Portada:", btnSeleccionarPortada);
         agregarBotones(btnBuscar, btnGuardar, btnLimpiar);
-
-        btnBuscar.addActionListener(this::buscarPelicula);
-        btnGuardar.addActionListener(this::guardarCambios);
-        btnLimpiar.addActionListener(e -> limpiarCampos());
 
         setVisible(true);
     }
 
+    /**
+     * Busca una película por su título seleccionado en el combo.
+     * Si se encuentra, carga sus datos en los campos del formulario y muestra la portada.
+     * 
+     * @param e Evento de acción generado al presionar el botón "Buscar"
+     */
     private void buscarPelicula(ActionEvent e) {
         String titulo = comboTituloBuscar.getSelectedItem().toString().trim();
-        if (titulo.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debes ingresar o seleccionar un título.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        PeliculaDAO dao = new PeliculaDAO();
-        peliculaActual = dao.buscarPorTitulo(titulo);
+        peliculaActual = service.buscarPorTitulo(titulo);
 
         if (peliculaActual != null) {
             txtTitulo.setText(peliculaActual.getTitulo());
@@ -64,41 +69,51 @@ public class FormularioModificar extends FormularioBase {
             txtAnno.setText(String.valueOf(peliculaActual.getAnno()));
             txtDuracion.setText(String.valueOf(peliculaActual.getDuracion()));
             comboGenero.setSelectedItem(peliculaActual.getGenero());
+            rutaPortadaSeleccionada = peliculaActual.getRutaPortada();
+            mostrarMiniatura(rutaPortadaSeleccionada);
         } else {
-            JOptionPane.showMessageDialog(this, "Película no encontrada.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             limpiarCampos();
         }
     }
 
+    /**
+     * Abre un selector de archivos para elegir una nueva imagen de portada desde el disco.
+     * Al seleccionar una imagen válida, se actualiza la miniatura en el formulario.
+     */
+    private void seleccionarImagen() {
+        rutaPortadaSeleccionada = seleccionarPortadaDesdeDisco();
+        mostrarMiniatura(rutaPortadaSeleccionada);
+    }
+
+    /**
+     * Valida los campos numéricos y actualiza los datos de la película actual.
+     * Si la validación es exitosa, se envía la película al servicio para ser actualizada en la base de datos.
+     * Muestra un mensaje de confirmación y limpia los campos si la operación fue exitosa.
+     * 
+     * @param e Evento de acción generado al presionar el botón "Guardar Cambios"
+     */
     private void guardarCambios(ActionEvent e) {
-        if (peliculaActual == null) {
-            JOptionPane.showMessageDialog(this, "Primero debes buscar una película.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        if (peliculaActual == null || !validarNumeros(txtAnno.getText().trim(), txtDuracion.getText().trim())) return;
 
-        try {
-            peliculaActual.setTitulo(txtTitulo.getText().trim());
-            peliculaActual.setDirector(txtDirector.getText().trim());
-            peliculaActual.setAnno(Integer.parseInt(txtAnno.getText().trim()));
-            peliculaActual.setDuracion(Integer.parseInt(txtDuracion.getText().trim()));
-            peliculaActual.setGenero((String) comboGenero.getSelectedItem());
+        peliculaActual.setTitulo(txtTitulo.getText().trim());
+        peliculaActual.setDirector(txtDirector.getText().trim());
+        peliculaActual.setAnno(Integer.parseInt(txtAnno.getText().trim()));
+        peliculaActual.setDuracion(Integer.parseInt(txtDuracion.getText().trim()));
+        Genero generoSeleccionado = (Genero) comboGenero.getSelectedItem();
+        peliculaActual.setGenero(generoSeleccionado);
+        peliculaActual.setRutaPortada(rutaPortadaSeleccionada);
 
-            PeliculaDAO dao = new PeliculaDAO();
-            boolean exito = dao.actualizarPelicula(peliculaActual);
-
-            if (exito) {
-                JOptionPane.showMessageDialog(this, "Película modificada correctamente.");
-                limpiarCampos();
-                peliculaActual = null;
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo modificar la película.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Año y duración deben ser números válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+        if (service.modificarPelicula(peliculaActual)) {
+            JOptionPane.showMessageDialog(this, "Película modificada correctamente.");
+            limpiarCampos();
+            peliculaActual = null;
         }
     }
 
+    /**
+     * Limpia todos los campos del formulario, restableciendo el combo de búsqueda y eliminando la miniatura.
+     * También reinicia la referencia a la película actual.
+     */
     private void limpiarCampos() {
         comboTituloBuscar.setSelectedIndex(-1);
         txtTitulo.setText("");
@@ -106,5 +121,7 @@ public class FormularioModificar extends FormularioBase {
         txtAnno.setText("");
         txtDuracion.setText("");
         comboGenero.setSelectedIndex(0);
+        rutaPortadaSeleccionada = null;
+        mostrarMiniatura(null);
     }
 }

@@ -18,6 +18,14 @@ public class VentanaManager {
 
     private static final Map<Class<? extends JFrame>, JFrame> ventanas = new HashMap<>();
 
+    /**
+     * Abre una ventana de la clase especificada.
+     * Si la ventana ya está abierta, la trae al frente.
+     * Si no está abierta, crea una nueva instancia utilizando el proveedor proporcionado.
+     *
+     * @param claseVentana La clase de la ventana a abrir (debe extender JFrame).
+     * @param proveedor    Un proveedor que crea una nueva instancia de la ventana.
+     */
     public static void abrirVentana(Class<? extends JFrame> claseVentana, Supplier<JFrame> proveedor) {
         JFrame actual = ventanas.get(claseVentana);
 

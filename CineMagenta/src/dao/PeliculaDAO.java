@@ -4,7 +4,7 @@
  */
 package dao;
 
-import model.Pelicula;
+import model.*;
 import util.ConexionDB;
 
 import java.sql.Connection;
@@ -15,25 +15,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Clase encargada de gestionar operaciones de persistencia relacionadas con la entidad {@link Pelicula}.
- * Utiliza JDBC para interactuar con la base de datos a través de la clase {@link ConexionDB}.
+ * Clase DAO encargada de gestionar operaciones de persistencia para la entidad {@link Pelicula}.
+ * Utiliza JDBC para interactuar con la base de datos a través de {@link ConexionDB}.
+ * Forma parte de la capa de acceso a datos del sistema CineMagenta.
  * 
- * Esta clase forma parte de la capa DAO (Data Access Object) del sistema CineMagenta.
+ * Métodos disponibles:
+ * <ul>
+ *   <li>Insertar nueva película</li>
+ *   <li>Actualizar película existente</li>
+ *   <li>Eliminar película por título</li>
+ *   <li>Buscar película por título</li>
+ *   <li>Verificar existencia por ID</li>
+ *   <li>Obtener lista de títulos</li>
+ * </ul>
  * 
  * @author Miguel
  */
-
 public class PeliculaDAO {
 
     /**
-     * Inserta una nueva película en la tabla Cartelera de la base de datos.
-     *
-     * @param p Objeto {@link Pelicula} que contiene los datos a insertar
-     * @return {@code true} si la inserción fue exitosa; {@code false} en caso contrario
-     * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+     * Inserta una nueva película en la base de datos.
+     * 
+     * @param p Película a insertar
+     * @return {@code true} si la operación fue exitosa, {@code false} en caso contrario
      */
     public boolean insertar(Pelicula p) throws SQLException {
-        String sql = "INSERT INTO Cartelera (titulo, director, anno, duracion, genero) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Cartelera (titulo, director, anno, duracion, genero, ruta_portada) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConexionDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -42,7 +49,8 @@ public class PeliculaDAO {
             stmt.setString(2, p.getDirector());
             stmt.setInt(3, p.getAnno());
             stmt.setInt(4, p.getDuracion());
-            stmt.setString(5, p.getGenero());
+            stmt.setString(5, p.getGenero().getEtiqueta());
+            stmt.setString(6, p.getRutaPortada());
 
             int filas = stmt.executeUpdate();
             return filas > 0;
@@ -67,15 +75,16 @@ public class PeliculaDAO {
             return rs.next();
         }
     }
+    
     /**
-     * Busca una película por su título en la tabla PELICULA.
-     *
+     * Busca una película por su título.
+     * 
      * @param titulo Título de la película a buscar
-     * @return Objeto {@link Pelicula} si se encuentra; {@code null} si no existe
+     * @return Instancia de {@link Pelicula} si se encuentra, {@code null} si no existe
      */
     public Pelicula buscarPorTitulo(String titulo) {
         Pelicula resultado = null;
-        String sql = "SELECT * FROM CARTELERA WHERE TITULO = ?";
+        String sql = "SELECT * FROM cartelera WHERE TITULO = ?";
 
         try (Connection conn = ConexionDB.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -90,7 +99,8 @@ public class PeliculaDAO {
                     rs.getString("DIRECTOR"),
                     rs.getInt("ANNO"),
                     rs.getInt("DURACION"),
-                    rs.getString("GENERO")
+                    Genero.desdeEtiqueta(rs.getString("GENERO")),
+                    rs.getString("RUTA_PORTADA")
                 );
             }
 
@@ -108,7 +118,7 @@ public class PeliculaDAO {
      * @return {@code true} si la eliminación fue exitosa; {@code false} si no se encontró o no se pudo eliminar
      */
     public boolean eliminarPorTitulo(String titulo) {
-        String sql = "DELETE FROM CARTELERA WHERE TITULO = ?";
+        String sql = "DELETE FROM cartelera WHERE TITULO = ?";
 
         try (Connection conn = ConexionDB.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -124,8 +134,15 @@ public class PeliculaDAO {
         }
     }
 
+    /**
+     * Actualiza los datos de una película existente en la tabla PELICULA.
+     *
+     * @param p Objeto {@link Pelicula} con los datos actualizados
+     * @return {@code true} si la actualización fue exitosa; {@code false} si no se encontró o no se pudo actualizar
+     */
     public boolean actualizarPelicula(Pelicula p) {
-        String sql = "UPDATE CARTELERA SET TITULO = ?, DIRECTOR = ?, ANNO = ?, DURACION = ?, GENERO = ? WHERE ID = ?";
+        String sql = "UPDATE cartelera SET titulo=?, director=?, anno=?, duracion=?, genero=?, ruta_portada=? WHERE id=?";
+
 
         try (Connection conn = ConexionDB.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -134,8 +151,10 @@ public class PeliculaDAO {
             stmt.setString(2, p.getDirector());
             stmt.setInt(3, p.getAnno());
             stmt.setInt(4, p.getDuracion());
-            stmt.setString(5, p.getGenero());
-            stmt.setInt(6, p.getId());
+            stmt.setString(5, p.getGenero().getEtiqueta());
+            stmt.setString(6, p.getRutaPortada());
+            stmt.setInt(7, p.getId());
+
 
             return stmt.executeUpdate() > 0;
 
@@ -145,9 +164,14 @@ public class PeliculaDAO {
         }
     }
 
+    /**
+     * Obtiene una lista con los títulos de todas las películas en la tabla PELICULA.
+     *
+     * @return Lista de títulos de películas; lista vacía si no hay películas
+     */
     public List<String> obtenerTodosLosTitulos() {
         List<String> titulos = new ArrayList<>();
-        String sql = "SELECT TITULO FROM CARTELERA ORDER BY TITULO ASC";
+        String sql = "SELECT TITULO FROM cartelera ORDER BY TITULO ASC";
 
         try (Connection conn = ConexionDB.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);

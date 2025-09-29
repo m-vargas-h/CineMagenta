@@ -17,22 +17,29 @@ Proyecto cineMagenta/
 │   ├── src/ 
 │   │   ├── dao/                          # PeliculaDAO 
 │   │   │   └── PeliculaDAO.java
-│   │   ├── model/                        # Clase Pelicula 
+│   │   ├── model/                        # Clases base
+│   │   │   ├── Genero.java
 │   │   │   └── Pelicula.java  
+│   │   ├── resources/                    # Recursos gráficos para la interfaz
+│   │   ├── service/                      # Gestión de operaciones relacionadas con películas
+│   │   │   └── PeliculaService.java
 │   │   ├── util/                         # ConexionDB y PeliculaValidador 
 │   │   │   ├── ConexionDB.java
 │   │   │   ├── PeliculaValidador.java 
-│   │   │   └── VentanaManager
+│   │   │   └── VentanaManager.java
 │   │   ├── view/                         # MainFrame y Formularios
 │   │   │   ├── FormularioAgregar.java 
+│   │   │   ├── FormularioBase.java 
 │   │   │   ├── FormularioEliminar.java 
 │   │   │   ├── FormularioModificar.java 
 │   │   │   └── MainFrame.java
-│   │   └── resources/                    # Recursos gráficos para la interfaz
+│   │   ├── resources/                    # Recursos gráficos para la interfaz
+│   │   └── CineMagenta.java
 │   ├── nbproject/                       
 │   ├── build.xml                        
 │   └── manifest.mf                        
 ├── docs/                                 # Documentación técnica 
+│   ├── Portadas/                         # Contiene las caratulas para películas 
 │   ├── Cine_DB.sql        
 │   ├── UML_CineMagenta    
 │   └── javadoc/ 
@@ -52,6 +59,15 @@ Proyecto cineMagenta/
   - `anno` (INT, NOT NULL)
   - `duracion` (INT, minutos)
   - `genero` (ENUM: Acción, Comedia, Drama, Suspenso, Terror, Animación)
+  - `ruta_portada` (VARCHAR(255))
+
+### Datos iniciales
+
+El script incluye tres películas precargadas:
+- Harry Potter y la Piedra Filosofal (2001)
+- Harry Potter y la Cámara Secreta (2002)
+- La La Land (2016)
+
 
 El script de creación se encuentra en [`docs/Cine_DB.sql`](docs/Cine_DB.sql).
 
@@ -69,9 +85,11 @@ El script de creación se encuentra en [`docs/Cine_DB.sql`](docs/Cine_DB.sql).
 - **Formulario “Modificar película”** con:
   - Búsqueda por título con carga automática de campos
   - Campos editables: título, director, año, duración, género
+  - Visualización de portada y datos clave (director, año, duración, género)
   - Género disponible como lista desplegable
 - **Formulario “Eliminar película”** con:
   - Búsqueda por título con confirmación previa
+  - Visualización de portada y datos clave (director, año, duración, género)
   - Validación de existencia antes de eliminar
   - Mensajes de éxito o error según el resultado
 
