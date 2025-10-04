@@ -239,20 +239,7 @@ public abstract class FormularioBase extends JFrame {
     }
 
     protected String obtenerInstrucciones() {
-        if (getTitle().contains("Agregar")) {
-            return "Completa los campos obligatorios como título, director, año y duración, "
-                + "luego selecciona una portada desde tu equipo y verifica los datos ingresados.\n"
-                + "El nombre de la portada no debe contener espacios para evitar fallas en la base"
-                + " de datos y debe copiarse previamente en la carpeta 'docs/portadas'.\n";
-        } else if (getTitle().contains("Modificar")) {
-            return "Selecciona o escribe el título de una película existente.\n"
-                + "Edita los campos que desees actualizar y cambia la portada si lo necesitas.\n"
-                + "Haz clic en 'Guardar Cambios' para aplicar las modificaciones.";
-        } else if (getTitle().contains("Eliminar")) {
-            return "Selecciona o escribe el título de una película que deseas eliminar.\n"
-                + "Verifica la portada y confirma que es la película correcta.\n"
-                + "Haz clic en 'Eliminar' y acepta la confirmación para borrarla.";
-        }
         return "";
     }
+
 }

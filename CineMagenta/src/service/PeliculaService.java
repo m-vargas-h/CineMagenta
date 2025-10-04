@@ -1,10 +1,13 @@
 package service;
 
 import dao.PeliculaDAO;
+import model.Genero;
 import model.Pelicula;
 import util.PeliculaValidador;
 
 import javax.swing.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -126,4 +129,31 @@ public class PeliculaService {
         JOptionPane.showMessageDialog(null, mensaje + ": " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         ex.printStackTrace();
     }
+
+    /**
+     * Obtiene una lista de películas aplicando filtros opcionales por género y rango de años.
+     * 
+     * @param genero    Género a filtrar (puede ser {@code null} para no aplicar filtro)
+     * @param annoDesde Año inicial del rango (puede ser {@code null} para no aplicar filtro)
+     * @param annoHasta Año final del rango (puede ser {@code null} para no aplicar filtro)
+     * @return Lista de películas que cumplen con los filtros especificados
+     */
+    public List<Pelicula> listarPeliculas(Genero genero, Integer annoDesde, Integer annoHasta) {
+        try {
+            return dao.listarPeliculas(genero, annoDesde, annoHasta);
+        } catch (Exception ex) {
+            mostrarError("Error al listar películas", ex);
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Pelicula> buscarPeliculasPorTitulo(String texto) {
+        try {
+            return dao.buscarPorTituloParcial(texto);
+        } catch (Exception ex) {
+            mostrarError("Error al buscar películas", ex);
+            return List.of();
+        }
+    }
+
 }

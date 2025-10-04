@@ -6,7 +6,6 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-//import java.awt.event.ActionEvent;
 import util.VentanaManager;
 
 /**
@@ -84,7 +83,21 @@ public class MainFrame extends JFrame {
             VentanaManager.abrirVentana(FormularioModificar.class, FormularioModificar::new);
         });
 
-        //TODO: En futuras versiones otros botones tendrán sus respectivas acciones
+        /**
+         * Acción del botón "Listar".
+         * Abre el formulario {@link FormularioListar} para visualizar todas las películas con filtros.
+         */
+        btnListar.addActionListener(e -> {
+            VentanaManager.abrirVentana(FormularioListar.class, FormularioListar::new);
+        });
+
+        /**
+         * Acción del botón "Buscar".
+         * Abre el formulario {@link FormularioBuscar} para localizar películas por título o fracción de título.
+         */
+        btnBuscar.addActionListener(e -> {
+            VentanaManager.abrirVentana(FormularioBuscar.class, FormularioBuscar::new);
+        });
 
         setVisible(true);
     }

@@ -139,7 +139,6 @@ public class FormularioEliminar extends FormularioBase {
         }
     }
 
-    
     /**
      * Limpia todos los campos del formulario, restableciendo el combo de búsqueda,
      * eliminando la miniatura y reiniciando el panel informativo.
@@ -154,4 +153,12 @@ public class FormularioEliminar extends FormularioBase {
         lblDuracion.setText("Duración: ");
         lblGenero.setText("Género: ");
     }
+
+    @Override
+    protected String obtenerInstrucciones() {
+        return "Selecciona o escribe el título de una película que deseas eliminar.\n"
+            + "Verifica la portada y confirma que es la película correcta.\n"
+            + "Haz clic en 'Eliminar' y acepta la confirmación para borrarla.";
+    }
+    
 }

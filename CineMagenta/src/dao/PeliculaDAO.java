@@ -112,6 +112,42 @@ public class PeliculaDAO {
     }
 
     /**
+     * Busca películas cuyo título contenga el texto indicado (búsqueda parcial).
+     *
+     * @param texto Texto a buscar dentro del título
+     * @return Lista de películas que coinciden parcial o totalmente
+     */
+    public List<Pelicula> buscarPorTituloParcial(String texto) {
+        List<Pelicula> resultados = new ArrayList<>();
+        String sql = "SELECT * FROM cartelera WHERE LOWER(TITULO) LIKE ?";
+
+        try (Connection conn = ConexionDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + texto.toLowerCase() + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Pelicula p = new Pelicula(
+                    rs.getInt("ID"),
+                    rs.getString("TITULO"),
+                    rs.getString("DIRECTOR"),
+                    rs.getInt("ANNO"),
+                    rs.getInt("DURACION"),
+                    Genero.desdeEtiqueta(rs.getString("GENERO")),
+                    rs.getString("RUTA_PORTADA")
+                );
+                resultados.add(p);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error al buscar películas por título parcial: " + e.getMessage());
+        }
+
+        return resultados;
+    }
+
+    /**
      * Elimina una película por su título en la tabla PELICULA.
      *
      * @param titulo Título de la película a eliminar
@@ -186,6 +222,65 @@ public class PeliculaDAO {
         }
 
         return titulos;
+    }
+
+    /**
+     * Obtiene una lista de películas desde la base de datos, con filtros opcionales por género y rango de años.
+     *
+     * @param genero     Género a filtrar (puede ser {@code null} para no aplicar filtro)
+     * @param annoDesde  Año inicial del rango (puede ser {@code null} para no aplicar filtro)
+     * @param annoHasta  Año final del rango (puede ser {@code null} para no aplicar filtro)
+     * @return Lista de películas que cumplen con los filtros especificados
+     */
+    public List<Pelicula> listarPeliculas(Genero genero, Integer annoDesde, Integer annoHasta) {
+        List<Pelicula> peliculas = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM cartelera WHERE 1=1");
+
+        // Construcción dinámica de filtros
+        if (genero != null) {
+            sql.append(" AND genero = ?");
+        }
+        if (annoDesde != null) {
+            sql.append(" AND anno >= ?");
+        }
+        if (annoHasta != null) {
+            sql.append(" AND anno <= ?");
+        }
+        sql.append(" ORDER BY titulo ASC");
+
+        try (Connection conn = ConexionDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+
+            int index = 1;
+            if (genero != null) {
+                stmt.setString(index++, genero.getEtiqueta());
+            }
+            if (annoDesde != null) {
+                stmt.setInt(index++, annoDesde);
+            }
+            if (annoHasta != null) {
+                stmt.setInt(index++, annoHasta);
+            }
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Pelicula p = new Pelicula(
+                    rs.getInt("ID"),
+                    rs.getString("TITULO"),
+                    rs.getString("DIRECTOR"),
+                    rs.getInt("ANNO"),
+                    rs.getInt("DURACION"),
+                    Genero.desdeEtiqueta(rs.getString("GENERO")),
+                    rs.getString("RUTA_PORTADA")
+                );
+                peliculas.add(p);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al listar películas: " + e.getMessage());
+        }
+
+        return peliculas;
     }
 
 }

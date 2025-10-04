@@ -98,4 +98,11 @@ public class FormularioAgregar extends FormularioBase {
         rutaPortadaSeleccionada = null;
         mostrarMiniatura(null);
     }
+
+    @Override
+    protected String obtenerInstrucciones() {
+        return "Completa los campos obligatorios como título, director, año y duración.\n"
+            + "Selecciona una portada desde tu equipo y verifica los datos ingresados.\n"
+            + "El nombre de la portada no debe contener espacios y debe estar en 'docs/portadas'.";
+    }
 }

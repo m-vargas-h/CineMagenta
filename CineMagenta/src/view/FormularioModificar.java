@@ -124,4 +124,11 @@ public class FormularioModificar extends FormularioBase {
         rutaPortadaSeleccionada = null;
         mostrarMiniatura(null);
     }
+
+    @Override
+    protected String obtenerInstrucciones() {
+        return "Selecciona o escribe el título de una película existente.\n"
+            + "Edita los campos que desees actualizar y cambia la portada si lo necesitas.\n"
+            + "Haz clic en 'Guardar Cambios' para aplicar las modificaciones.";
+    }
 }
