@@ -3,6 +3,7 @@ package view;
 import model.Genero;
 import model.Pelicula;
 import service.PeliculaService;
+import util.DialogUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,8 @@ import java.awt.event.ActionEvent;
  * 
  * Esta clase extiende {@link FormularioBase} para reutilizar componentes visuales comunes
  * y utiliza {@link PeliculaService} para validar e insertar los datos en la base de datos.
+ * 
+ * Los mensajes de validación y confirmación se muestran mediante {@link DialogUtils}.
  * 
  * @author Miguel
  */
@@ -81,8 +84,10 @@ public class FormularioAgregar extends FormularioBase {
         );
 
         if (service.agregarPelicula(p)) {
-            JOptionPane.showMessageDialog(this, "Película agregada correctamente.");
+            DialogUtils.info("Película agregada correctamente.");
             limpiarCampos();
+        } else {
+            DialogUtils.error("No se pudo agregar la película. Verifica los datos e intenta nuevamente.");
         }
     }
 
@@ -102,7 +107,7 @@ public class FormularioAgregar extends FormularioBase {
     @Override
     protected String obtenerInstrucciones() {
         return "Completa los campos obligatorios como título, director, año y duración.\n"
-            + "Selecciona una portada desde tu equipo y verifica los datos ingresados.\n"
-            + "El nombre de la portada no debe contener espacios y debe estar en 'docs/portadas'.";
+             + "Selecciona una portada desde tu equipo y verifica los datos ingresados.\n"
+             + "El nombre de la portada no debe contener espacios y debe estar en 'docs/portadas'.";
     }
 }

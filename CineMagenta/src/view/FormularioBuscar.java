@@ -2,6 +2,7 @@ package view;
 
 import model.Pelicula;
 import service.PeliculaService;
+import util.DialogUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -20,6 +21,8 @@ import java.util.List;
  * - Permite ordenar las columnas haciendo clic en los encabezados.
  * - Muestra la portada de la película seleccionada en el panel derecho.
  * - La tabla no incluye la columna de ruta de portada (se maneja internamente).
+ * 
+ * Los mensajes de validación y resultados se muestran mediante {@link DialogUtils}.
  * 
  * @author Miguel
  */
@@ -73,19 +76,25 @@ public class FormularioBuscar extends FormularioBase {
         });
     }
 
+    /**
+     * Ejecuta la búsqueda de películas según el texto ingresado.
+     * Muestra advertencias si el campo está vacío y resultados informativos si no hay coincidencias.
+     * 
+     * @param e Evento de acción generado al presionar el botón "Buscar"
+     */
     private void buscarPeliculas(ActionEvent e) {
         String texto = txtBusqueda.getText().trim();
         modeloTabla.setRowCount(0);
 
         if (texto.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un texto para buscar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            DialogUtils.warning("Ingrese un texto para buscar.");
             return;
         }
 
         resultadosActuales = service.buscarPeliculasPorTitulo(texto);
 
         if (resultadosActuales.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No se encontraron películas con ese criterio.", "Resultado", JOptionPane.INFORMATION_MESSAGE);
+            DialogUtils.info("No se encontraron películas con ese criterio.");
         } else {
             for (Pelicula p : resultadosActuales) {
                 modeloTabla.addRow(new Object[]{

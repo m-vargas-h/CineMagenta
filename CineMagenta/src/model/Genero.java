@@ -17,6 +17,7 @@ package model;
  */
 public enum Genero {
     ACCION("Acción"),
+    CIENCIA_FICCION("Ciencia Ficción"),
     COMEDIA("Comedia"),
     DRAMA("Drama"),
     SUSPENSO("Suspenso"),

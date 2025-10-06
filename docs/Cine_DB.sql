@@ -26,6 +26,22 @@ VALUES ('Harry Potter y la Cámara Secreta', 'Chris Columbus', 2002, 161, 'Acci�
 INSERT INTO Cartelera (titulo, director, anno, duracion, genero, ruta_portada)
 VALUES ('La La Land', 'Damien Chazelle', 2016, 128, 'Musical', 'docs/portadas/LaLaLand.jpg');
 
+-- Insertar El Padrino
+INSERT INTO Cartelera (titulo, director, anno, duracion, genero, ruta_portada)
+VALUES ('El Padrino', 'Francis Ford Coppola', 1972, 175, 'Drama', 'docs/portadas/ElPadrino.jpg');
+
+-- Insertar Jurassic Park I
+INSERT INTO Cartelera (titulo, director, anno, duracion, genero, ruta_portada)
+VALUES ('Jurassic Park', 'Steven Spielberg', 1993, 127, 'Acción', 'docs/portadas/JurassicPark.jpg');
+
+-- Insertar Amélie
+INSERT INTO Cartelera (titulo, director, anno, duracion, genero, ruta_portada)
+VALUES ('Amélie', 'Jean-Pierre Jeunet', 2001, 122, 'Comedia', 'docs/portadas/Amelie.jpg');
+
+-- Insertar Parasite
+INSERT INTO Cartelera (titulo, director, anno, duracion, genero, ruta_portada)
+VALUES ('Parasite', 'Bong Joon-ho', 2019, 132, 'Suspenso', 'docs/portadas/Parasite.jpg');
+
 -- verificar que se agregaron datas desde la app correctamente 
 SELECT * FROM cartelera;
 

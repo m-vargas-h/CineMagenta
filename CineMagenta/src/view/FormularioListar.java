@@ -3,6 +3,7 @@ package view;
 import model.Genero;
 import model.Pelicula;
 import service.PeliculaService;
+import util.DialogUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -117,11 +118,19 @@ public class FormularioListar extends FormularioBase {
         }
     }
 
+    /**
+     * Intenta convertir un texto a número entero.
+     * Si el texto está vacío devuelve {@code null}.
+     * Si no es un número válido, muestra un mensaje de error estandarizado y devuelve {@code null}.
+     *
+     * @param texto Texto a convertir
+     * @return Número entero o {@code null} si no es válido
+     */
     private Integer parseEntero(String texto) {
         try {
             return (texto == null || texto.isBlank()) ? null : Integer.parseInt(texto.trim());
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Ingrese un número válido en los campos de año.", "Error", JOptionPane.ERROR_MESSAGE);
+            DialogUtils.error("Ingrese un número válido en los campos de año.");
             return null;
         }
     }

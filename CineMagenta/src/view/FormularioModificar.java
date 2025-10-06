@@ -2,6 +2,7 @@ package view;
 
 import model.*;
 import service.PeliculaService;
+import util.DialogUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -104,10 +105,13 @@ public class FormularioModificar extends FormularioBase {
         peliculaActual.setRutaPortada(rutaPortadaSeleccionada);
 
         if (service.modificarPelicula(peliculaActual)) {
-            JOptionPane.showMessageDialog(this, "Película modificada correctamente.");
+            DialogUtils.info("Película modificada correctamente.");
             limpiarCampos();
             peliculaActual = null;
+        } else {
+            DialogUtils.error("No se pudo modificar la película. Verifica los datos e intenta nuevamente.");
         }
+
     }
 
     /**

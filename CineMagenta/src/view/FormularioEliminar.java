@@ -2,6 +2,7 @@ package view;
 
 import model.Pelicula;
 import service.PeliculaService;
+import util.DialogUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -125,16 +126,14 @@ public class FormularioEliminar extends FormularioBase {
     private void eliminarPelicula(ActionEvent e) {
         if (peliculaActual == null) return;
 
-        int confirmacion = JOptionPane.showConfirmDialog(this,
-            "¿Estás seguro de que deseas eliminar esta película?",
-            "Confirmar eliminación",
-            JOptionPane.YES_NO_OPTION);
-
-        if (confirmacion == JOptionPane.YES_OPTION) {
+        // Confirmación centralizada
+        if (DialogUtils.confirmar("¿Estás seguro de que deseas eliminar esta película?")) {
             if (service.eliminarPorTitulo(peliculaActual.getTitulo())) {
-                JOptionPane.showMessageDialog(this, "Película eliminada correctamente.");
+                DialogUtils.info("Película eliminada correctamente.");
                 limpiarCampos();
                 peliculaActual = null;
+            } else {
+                DialogUtils.error("No se pudo eliminar la película. Intenta nuevamente.");
             }
         }
     }

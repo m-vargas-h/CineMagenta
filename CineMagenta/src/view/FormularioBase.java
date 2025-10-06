@@ -1,6 +1,7 @@
 package view;
 
 import dao.PeliculaDAO;
+import util.DialogUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -176,7 +177,7 @@ public abstract class FormularioBase extends JFrame {
             Integer.parseInt(duracion);
             return true;
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Año y duración deben ser números válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+            DialogUtils.error("Año y duración deben ser números válidos.");
             return false;
         }
     }
@@ -198,7 +199,8 @@ public abstract class FormularioBase extends JFrame {
                 Files.copy(archivo.toPath(), new File(ruta).toPath(), StandardCopyOption.REPLACE_EXISTING);
                 return ruta;
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Error al copiar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
+                DialogUtils.error("Error al copiar la imagen.");
+
             }
         }
         return null;
