@@ -106,8 +106,8 @@ public class FormularioAgregar extends FormularioBase {
 
     @Override
     protected String obtenerInstrucciones() {
-        return "Completa los campos obligatorios como título, director, año y duración.\n"
-             + "Selecciona una portada desde tu equipo y verifica los datos ingresados.\n"
+        return "Completa los campos obligatorios como título, director, año y duración en minutos.\n"
+             + "Selecciona una portada desde tu equipo y verifica los datos ingresados. "
              + "El nombre de la portada no debe contener espacios y debe estar en 'docs/portadas'.";
     }
 }

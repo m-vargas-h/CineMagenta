@@ -155,9 +155,10 @@ public class FormularioEliminar extends FormularioBase {
 
     @Override
     protected String obtenerInstrucciones() {
-        return "Selecciona o escribe el título de una película que deseas eliminar.\n"
-            + "Verifica la portada y confirma que es la película correcta.\n"
-            + "Haz clic en 'Eliminar' y acepta la confirmación para borrarla.";
+        return "Selecciona o escribe el título de una película que deseas eliminar, luego "
+            + "verifica la portada y confirma que es la película correcta.\n"
+            + "Haz clic en 'Eliminar' y acepta la confirmación para borrarla, "
+            + "recuerda que esta acción es irreversible.";
     }
     
 }

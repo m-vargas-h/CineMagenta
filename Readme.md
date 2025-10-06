@@ -1,9 +1,9 @@
-# Experiencia 3 – Semana 6
+# Experiencia 3 – Semana 8
 # 🎬 CineMagenta — Prototipo de Gestión de Cartelera Cinematográfica
 
 ## 📌 Descripción del proyecto
 
-**CineMagenta** es una aplicación Java con interfaz gráfica que permite gestionar una cartelera de películas almacenadas en una base de datos MySQL. Este prototipo fue desarrollado como parte de una evaluación formativa, cumpliendo los requisitos de creación de base de datos, interfaz principal y formulario de ingreso de películas.
+**CineMagenta** es una aplicación Java con interfaz gráfica que permite gestionar una cartelera de películas almacenadas en una base de datos MySQL. Este prototipo fue desarrollado como parte de una evaluación sumativa, cumpliendo los requisitos de creación de base de datos, interfaz principal y formulario de ingreso, modificación, eliminación y búsqueda de películas.
 
 El proyecto está diseñado con enfoque en modularidad, validación de datos, y experiencia de usuario, y se encuentra en fase de desarrollo incremental.
 

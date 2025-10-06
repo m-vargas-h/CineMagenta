@@ -111,8 +111,8 @@ public class FormularioBuscar extends FormularioBase {
 
     @Override
     protected String obtenerInstrucciones() {
-        return "Escribe el nombre o parte del nombre de una película.\n"
-             + "Haz clic en 'Buscar' para ver todas las coincidencias.\n"
+        return "Escribe el nombre o parte del nombre de una película, luego "
+             + "haz clic en 'Buscar' para ver todas las coincidencias.\n"
              + "Selecciona una fila para ver la portada en el panel derecho.";
     }
 }

@@ -138,7 +138,7 @@ public class FormularioListar extends FormularioBase {
     @Override
     protected String obtenerInstrucciones() {
         return "Visualiza todas las películas registradas en el sistema.\n"
-             + "Puedes filtrar por género y rango de años.\n"
-             + "También puedes ordenar las columnas haciendo clic en sus encabezados.";
+             + "Puedes filtrar por género y rango de años, "
+             + "también puedes ordenar las columnas haciendo clic en sus encabezados.";
     }
 }
